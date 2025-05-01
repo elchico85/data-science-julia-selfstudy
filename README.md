@@ -12,7 +12,7 @@ Welcome to my personal learning journey. I'm a full-time worker, parent of three
 See [self-study plan](notes/) for my monthly roadmap.
 
 ## 📁 Projects
-- 📦 `scheduling-coils`: optimize and visualize job assignments in a mock plant
+- 📦 `scheduling-coils`: optimize and visualize job assignments in a coils plant
 - 📦 `downtime-analysis`: find patterns in simulated production halts
 - 💡 `dream-challenge`: fun case study combining DS + OR + automation
 
