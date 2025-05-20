@@ -1,5 +1,6 @@
 using FreqTables
 using Plots
+using InlineStrings
 #Retrieve data
 movies = readlines("movies.dat")
 movie1 = first(movies)
