@@ -1,12 +1,7 @@
 using Statistics
-<<<<<<< HEAD
 using GLM
 
 
-=======
-using DataFrames
-using StatsBase
->>>>>>> d5cfe65113da80cfe46f434977681f48dbbd6900
 aq = [10.0 8.04 10.0 9.14 10.0 7.46 8.0 6.58
 8.0 6.95 8.0 8.14 8.0 6.77 8.0 5.76
 13.0 7.58 13.0 8.74 13.0 12.74 8.0 7.71
@@ -28,11 +23,3 @@ aq = [10.0 8.04 10.0 9.14 10.0 7.46 8.0 6.58
 
 # model = lm(@formula(y ~ x), data.set1)
 
-=======
-data = (set1=(x=aq[:, 1], y=aq[:, 2]),
-       set2=(x=aq[:, 3], y=aq[:, 4]),
-       set3=(x=aq[:, 5], y=aq[:, 6]),
-       set4=(x=aq[:, 7], y=aq[:, 8]));
-
-       
->>>>>>> d5cfe65113da80cfe46f434977681f48dbbd6900
