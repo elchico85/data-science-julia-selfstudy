@@ -7,6 +7,7 @@ using Graphs
 using Statistics
 using Plots
 using Random
+using GLM
 
 function ingest_to_df(archive::ZipFile.Reader, filename::AbstractString)
 idx = only(findall(x -> x.name == filename, archive.files))
@@ -93,4 +94,6 @@ legend=:topleft, labels="fraction web",
 xticks=gen_ticks(maximum(classes_df.deg_ml)),
 yticks=gen_ticks(maximum(classes_df.deg_web)))
 
-arrivato a 12.3.3
+glm(@formula(ml_target~log1p(deg_ml)+log1p(deg_web)),
+classes_df, Binomial(), LogitLink())
+
