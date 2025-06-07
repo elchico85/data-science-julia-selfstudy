@@ -121,4 +121,55 @@ levels!(weekdays.dayname, weekdays.dayname)
 
 leftjoin!(owensboro2, weekdays; on=:day)
 
-13.3.4 Reshaping data frames
+"""
+freqtable(owensboro2, :dayname, :day) ---> matrice
+
+@chain owensboro2 begin
+groupby([:day, :dayname]; sort=true)
+combine(nrow)
+unstack(:dayname, :day, :nrow; fill=0)
+end -----> stesso risultato di prima ma dataframe
+"""
+
+dropmissing!(owensboro2)
+select!(owensboro2, Not(:day))
+
+#preparing the data for modeling
+Random.seed!(1234);
+owensboro2.train = rand(Bernoulli(0.7), nrow(owensboro2));
+train = subset(owensboro2, :train)
+test = subset(owensboro2, :train => ByRow(!))
+
+model = glm(@formula(arrest~dayname+type+v1+v2+v3+v4),
+train, Binomial(), LogitLink())
+
+train.predict = predict(model)
+test.predict = predict(model, test)
+
+test_groups = groupby(test, :arrest);
+
+histogram(test_groups[(false,)].predict;
+bins=10, normalize=:probability,
+fillstyle= :/, label="false")
+
+histogram!(test_groups[(true,)].predict;
+bins=10, normalize=:probability,
+fillalpha=0.5, label="true")
+
+@chain test begin
+@rselect(:predicted=:predict > 0.15, :observed=:arrest)
+proptable(:predicted, :observed; margins=2)
+end
+
+test_roc = roc(test; score=:predict, target=:arrest)
+
+plot(test_roc.pfa, test_roc.pmiss;
+color="black", lw=3,
+label="test (AUC=$(round(100*auc(test_roc), digits=2))%)",
+xlabel="pfa", ylabel="pmiss")
+
+train_roc = roc(train, score=:predict, target=:arrest)
+
+plot!(train_roc.pfa, train_roc.pmiss;
+color="gold", lw=3,
+label="train (AUC=$(round(100*auc(train_roc), digits=2))%)")
